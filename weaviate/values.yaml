@@ -1,3 +1,4 @@
+externalName: weaviate.stage.az.zencastr.com
 image:
   # registry where weaviate image is stored
   registry: docker.io
@@ -32,7 +33,7 @@ storage:
 # weaviate only accessible within your cluster.
 service:
   name: weaviate
-  type: LoadBalancer
+  type: ClusterIP
 
 # Weaviate Config
 #
