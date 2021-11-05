@@ -28,6 +28,8 @@ spec:
             value: 'true'
           - name: PERSISTENCE_DATA_PATH
             value: '/var/lib/weaviate'
+          - name: AUTOSCHEMA_ENABLED
+            value: 'false'
           - name: ENABLE_MODULES
             value: {{ template "enabled_modules" . }}
           {{ if index .Values "modules" "text2vec-transformers" "enabled" }}
