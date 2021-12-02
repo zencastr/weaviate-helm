@@ -9,7 +9,7 @@ metadata:
     nginx.ingress.kubernetes.io/auth-secret: ingress-auth
     nginx.ingress.kubernetes.io/proxy-body-size: 5000m
   labels:
-    org: marketing
+    org: ml
   name: weaviate
 spec:
   rules:

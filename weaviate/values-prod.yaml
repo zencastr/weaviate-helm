@@ -1,4 +1,5 @@
-externalName: weaviate.stage.az.zencastr.com
+env: prod
+externalName: weaviate.prod.gcp.zencastr.com
 image:
   # registry where weaviate image is stored
   registry: docker.io
