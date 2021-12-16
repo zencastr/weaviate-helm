@@ -1,3 +1,5 @@
+env: prod
+externalName: weaviate.prod.gcp.zencastr.com
 image:
   # registry where weaviate image is stored
   registry: docker.io
@@ -7,7 +9,7 @@ image:
   # of weaviate. In accordance with Infra-as-code, you should pin this value
   # down and only change it if you explicitly want to upgrade the Weaviate
   # version.
-  tag: 1.8.0-rc.0
+  tag: 1.8.0
   repo: semitechnologies/weaviate
 
 # Scale replicas of Weaviate. Note that as of v1.8.0 dynamic scaling is limited
@@ -26,16 +28,14 @@ resources:
 # storage.fullnameOverride field set, then the default pvc will not be
 # created, instead the one defined in fullnameOverride will be used
 storage:
-  size: 32Gi
-  storageClassName: premium-rwo
+  size: 100Gi
 
 # The service controls how weaviate is exposed to the outside world. If you
 # don't want a public load balancer, you can also choose 'ClusterIP' to make
 # weaviate only accessible within your cluster.
 service:
   name: weaviate
-  type: LoadBalancer
-  loadBalancerSourceRanges: []
+  type: ClusterIP
 
 # Adjust liveness and readiness configuration
 livenessProbe:
@@ -44,6 +44,7 @@ livenessProbe:
 readinessProbe:
   initialDelaySeconds: 3
   periodSeconds: 3
+
 
 # Weaviate Config
 #
@@ -83,7 +84,7 @@ modules:
   # transformers-based models.
   text2vec-contextionary:
     # disable if you want to use transformers or import or own vectors
-    enabled: true
+    enabled: false
 
     # The configuration below is ignored if enabled==false
     fullnameOverride: contextionary
@@ -112,22 +113,22 @@ modules:
 
     # enable if you want to use transformers instead of the
     # text2vec-contextionary module
-    enabled: false
+    enabled: true
 
     # The configuration below is ignored if enabled==false
 
     # replace with model of choice, see
     # https://www.semi.technology/developers/weaviate/current/modules/text2vec-transformers.html
     # for all supported models or build your own container.
-    tag: distilbert-base-uncased
+    tag: sentence-transformers-multi-qa-mpnet-base-cos-v1
     repo: semitechnologies/transformers-inference
     registry: docker.io
     replicas: 1
     fullnameOverride: transformers-inference
     envconfig:
       # enable for CUDA support. Your K8s cluster needs to be configured
-      # accordingly and you need to explicitly set GPU requests & limits below
-      enable_cuda: false
+      # accordingly and you need to explicilty set GPU requests & limits below
+      enable_cuda: true
 
       # only used when cuda is enabled
       nvidia_visible_devices: all
@@ -141,13 +142,13 @@ modules:
         memory: '3000Mi'
 
         # enable if running with CUDA support
-        # nvidia.com/gpu: 1
+        nvidia.com/gpu: 1
       limits:
         cpu: '1000m'
         memory: '5000Mi'
 
         # enable if running with CUDA support
-        # nvidia.com/gpu: 1
+        nvidia.com/gpu: 1
 
   # The qna-transformers module uses neural networks, such as BERT,
   # DistilBERT, to find an aswer in text to a given question
@@ -289,7 +290,7 @@ modules:
   # use this module as the vectorizer if nothing else is specified. Can be
   # overwritten on a per-class basis.
   # set to text2vec-transformers if running with transformers instead
-  default_vectorizer_module: text2vec-contextionary
+  default_vectorizer_module: text2vec-transformers
 
 # It is also possible to configure authentication and authorization through a
 # custom configmap The authorization and authentication values defined in
