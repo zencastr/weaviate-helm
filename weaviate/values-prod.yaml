@@ -1,4 +1,4 @@
-env: prod
+zenv: prod
 externalName: weaviate.prod.gcp.zencastr.com
 image:
   # registry where weaviate image is stored

@@ -20,6 +20,9 @@ spec:
       - key: nvidia.com/gpu
         effect: NoSchedule
         operator: Exists
+      - key: workload_type
+        effect: NoSchedule
+        value: weaviate-gpu
       containers:
       - name: {{ index .Values "modules" "text2vec-transformers" "fullnameOverride" }}
         image: {{ index .Values "modules" "text2vec-transformers" "registry" }}/{{ index .Values "modules" "text2vec-transformers" "repo" }}:{{ index .Values "modules" "text2vec-transformers" "tag" }}
