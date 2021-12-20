@@ -143,7 +143,7 @@ modules:
     resources:
       requests:
         cpu: '1000m'
-        memory: '3000Mi'
+        memory: '5000Mi'
 
         # enable if running with CUDA support
         nvidia.com/gpu: 1
