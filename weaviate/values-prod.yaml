@@ -68,7 +68,7 @@ debug: false
 # set for the statefulSet. 
 env:
   # The aggressiveness of the Go Garbage Collector. 100 is the default value. 
-  GOGC: 100
+  GOGC: 150
 
 envSecrets:
 
